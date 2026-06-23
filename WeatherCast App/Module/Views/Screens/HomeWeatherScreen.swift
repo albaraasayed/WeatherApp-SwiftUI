@@ -185,7 +185,7 @@ struct HomeWeatherScreen: View {
                     hasInitializedOffset = true
                 }
                 if viewModel.weather == nil {
-                    viewModel.loadWeather(for: viewModel.currentCity)
+                    viewModel.loadWeatherForCurrentLocation()
                 }
             }
         }
