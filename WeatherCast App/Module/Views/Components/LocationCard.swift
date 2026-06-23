@@ -75,19 +75,11 @@ struct LocationCard: View {
                 .padding(20)
 
                 // 3D Weather icon protruding from top-right
-                ZStack {
-                    if let _ = UIImage(named: iconName) {
-                        Image(iconName)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 100, height: 100)
-                    } else {
-                        Image(systemName: WeatherIconMapper.sfSymbolName(for: iconName))
-                            .font(.system(size: 48))
-                            .symbolRenderingMode(.multicolor)
-                    }
-                }
-                .offset(x: -10, y: -15)
+                Image(iconName)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 100, height: 100)
+                    .offset(x: -10, y: -15)
             }
             .frame(height: 170)
             .background(

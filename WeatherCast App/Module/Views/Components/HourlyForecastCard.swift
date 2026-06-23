@@ -38,20 +38,12 @@ struct HourlyForecastCard: View {
                 .font(.system(size: 15, weight: .semibold))
                 .foregroundStyle(.white)
 
-            // Weather icon — tries custom asset, falls back to SF Symbol
-            ZStack {
-                if let _ = UIImage(named: iconName) {
-                    Image(iconName)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 32, height: 32)
-                } else {
-                    Image(systemName: WeatherIconMapper.sfSymbolName(for: iconName))
-                        .font(.system(size: 24))
-                        .symbolRenderingMode(.multicolor)
-                }
-            }
-            .frame(height: 36)
+            // Weather icon
+            Image(iconName)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 32, height: 32)
+                .frame(height: 36)
 
             // Rain chance
             Text(rainChance)

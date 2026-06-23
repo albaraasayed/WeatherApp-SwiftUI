@@ -1,6 +1,7 @@
 {
   "images" : [
     {
+      "filename" : "light-background.png",
       "idiom" : "universal",
       "scale" : "1x"
     },

@@ -37,11 +37,10 @@ struct HomeWeatherScreen: View {
                 .ignoresSafeArea()
 
             // Background image
-            Image("night-background")
+            Image("light-background")
                 .resizable()
                 .scaledToFill()
                 .ignoresSafeArea()
-                .opacity(0.4)
 
             // Main content
             VStack(spacing: 0) {
@@ -109,16 +108,10 @@ struct HomeWeatherScreen: View {
                         .frame(width: 280, height: 280)
 
                     // Weather icon
-                    if let _ = UIImage(named: viewModel.currentIconName) {
-                        Image(viewModel.currentIconName)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 180, height: 180)
-                    } else {
-                        Image(systemName: WeatherIconMapper.sfSymbolName(for: viewModel.currentIconName))
-                            .font(.system(size: 80))
-                            .symbolRenderingMode(.multicolor)
-                    }
+                    Image(viewModel.currentIconName)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 180, height: 180)
                 }
                 .frame(height: 200)
 
@@ -126,8 +119,14 @@ struct HomeWeatherScreen: View {
             }
 
             // Bottom sheet overlay
-            VStack {
+            VStack(spacing: 0) {
                 Spacer()
+
+                Image("House")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(maxWidth: .infinity)
+                    .offset(y: sheetOffset)
 
                 ForecastBottomSheet(
                     hourlyData: viewModel.hourlyForecast,

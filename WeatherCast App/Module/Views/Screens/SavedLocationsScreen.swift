@@ -17,7 +17,7 @@ struct SavedLocationsScreen: View {
     // MARK: - Properties
 
     /// The ViewModel for search and saved locations management
-    var viewModel: SavedLocationsViewModel
+    @Bindable var viewModel: SavedLocationsViewModel
 
     /// SwiftData model context for persistence
     @Environment(\.modelContext) private var modelContext

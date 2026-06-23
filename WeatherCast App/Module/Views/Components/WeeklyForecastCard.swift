@@ -39,19 +39,11 @@ struct WeeklyForecastCard: View {
                 .foregroundStyle(.white)
 
             // Weather icon
-            ZStack {
-                if let _ = UIImage(named: iconName) {
-                    Image(iconName)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 32, height: 32)
-                } else {
-                    Image(systemName: WeatherIconMapper.sfSymbolName(for: iconName))
-                        .font(.system(size: 24))
-                        .symbolRenderingMode(.multicolor)
-                }
-            }
-            .frame(height: 36)
+            Image(iconName)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 32, height: 32)
+                .frame(height: 36)
 
             // Rain chance
             Text(rainChance)

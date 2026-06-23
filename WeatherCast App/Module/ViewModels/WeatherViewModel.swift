@@ -278,11 +278,32 @@ class WeatherViewModel: NSObject, CLLocationManagerDelegate {
     /// Loads weather for the device's current location.
     func loadWeatherForCurrentLocation() {
         hasRequestedLocation = true
-        locationManager.requestWhenInUseAuthorization()
-        locationManager.requestLocation()
+        isLoading = true
+        errorMessage = nil
+        
+        let status = locationManager.authorizationStatus
+        if status == .notDetermined {
+            locationManager.requestWhenInUseAuthorization()
+        } else if status == .authorizedWhenInUse || status == .authorizedAlways {
+            locationManager.requestLocation()
+        } else {
+            // Fallback if denied or restricted
+            loadWeather(for: currentCity)
+        }
     }
 
     // MARK: - CLLocationManagerDelegate
+
+    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        guard hasRequestedLocation else { return }
+        
+        let status = manager.authorizationStatus
+        if status == .authorizedWhenInUse || status == .authorizedAlways {
+            manager.requestLocation()
+        } else if status == .denied || status == .restricted {
+            loadWeather(for: currentCity)
+        }
+    }
 
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.first else { return }
