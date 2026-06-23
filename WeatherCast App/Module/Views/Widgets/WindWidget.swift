@@ -7,23 +7,12 @@
 
 import SwiftUI
 
-// MARK: - Wind Widget
-
-/// A weather detail widget showing wind speed and direction
-/// with a compass UI showing the wind direction indicator.
 struct WindWidget: View {
 
-    // MARK: - Properties
-
-    /// Wind speed in kph
     let speed: Double
 
-    /// Wind direction abbreviation (e.g., "NE", "SSW")
     let direction: String
 
-    // MARK: - Private Computed
-
-    /// Converts direction string to degrees for the compass indicator
     private var directionDegrees: Double {
         let directionMap: [String: Double] = [
             "N": 0, "NNE": 22.5, "NE": 45, "ENE": 67.5,
@@ -34,11 +23,8 @@ struct WindWidget: View {
         return directionMap[direction] ?? 0
     }
 
-    // MARK: - Body
-
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            // Header
             HStack(spacing: 4) {
                 Image(systemName: "wind")
                     .font(.system(size: 12))
@@ -52,13 +38,10 @@ struct WindWidget: View {
 
             Spacer()
 
-            // Compass
             ZStack {
-                // Compass circle
                 Circle()
                     .stroke(Color.white.opacity(0.15), lineWidth: 2)
 
-                // Direction markers
                 ForEach(["N", "E", "S", "W"], id: \.self) { label in
                     let angle = compassAngle(for: label)
                     Text(label)
@@ -70,7 +53,6 @@ struct WindWidget: View {
                         )
                 }
 
-                // Tick marks
                 ForEach(0..<36, id: \.self) { i in
                     Rectangle()
                         .fill(Color.white.opacity(i % 9 == 0 ? 0.4 : 0.15))
@@ -79,7 +61,6 @@ struct WindWidget: View {
                         .rotationEffect(.degrees(Double(i) * 10))
                 }
 
-                // Direction arrow
                 VStack(spacing: 0) {
                     Triangle()
                         .fill(Color.white)
@@ -92,7 +73,6 @@ struct WindWidget: View {
                 .offset(y: -8)
                 .rotationEffect(.degrees(directionDegrees))
 
-                // Center label
                 VStack(spacing: 0) {
                     Text("\(Int(speed))")
                         .font(.system(size: 16, weight: .bold))
@@ -114,8 +94,6 @@ struct WindWidget: View {
         .glassmorphic(cornerRadius: 22)
     }
 
-    // MARK: - Helpers
-
     private func compassAngle(for label: String) -> Double {
         switch label {
         case "N": return 0
@@ -127,9 +105,6 @@ struct WindWidget: View {
     }
 }
 
-// MARK: - Triangle Shape
-
-/// A simple triangle shape used for the compass direction arrow.
 struct Triangle: Shape {
     func path(in rect: CGRect) -> Path {
         var path = Path()
@@ -140,8 +115,6 @@ struct Triangle: Shape {
         return path
     }
 }
-
-// MARK: - Preview
 
 #Preview {
     ZStack {

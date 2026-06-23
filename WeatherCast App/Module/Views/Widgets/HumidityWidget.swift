@@ -7,20 +7,10 @@
 
 import SwiftUI
 
-// MARK: - Humidity Widget
-
-/// A weather detail widget showing the current humidity percentage
-/// with a visual indicator and dew point description.
 struct HumidityWidget: View {
 
-    // MARK: - Properties
-
-    /// Humidity percentage (0-100)
     let humidity: Int
 
-    // MARK: - Private Computed
-
-    /// Description based on humidity level
     private var humidityDescription: String {
         if humidity < 30 {
             return "The air is dry right now."
@@ -33,16 +23,12 @@ struct HumidityWidget: View {
         }
     }
 
-    /// Normalized progress for the visual indicator
     private var progress: Double {
         return Double(humidity) / 100.0
     }
 
-    // MARK: - Body
-
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            // Header
             HStack(spacing: 4) {
                 Image(systemName: "humidity.fill")
                     .font(.system(size: 12))
@@ -54,14 +40,12 @@ struct HumidityWidget: View {
                     .tracking(0.5)
             }
 
-            // Humidity value
             Text("\(humidity)%")
                 .font(.system(size: 28, weight: .bold))
                 .foregroundStyle(.white)
 
             Spacer()
 
-            // Mini progress bar
             GeometryReader { geometry in
                 ZStack(alignment: .leading) {
                     RoundedRectangle(cornerRadius: 3)
@@ -75,7 +59,6 @@ struct HumidityWidget: View {
             }
             .frame(height: 5)
 
-            // Description
             Text(humidityDescription)
                 .font(.system(size: 14))
                 .foregroundStyle(Color.themeSecondary.opacity(0.6))
@@ -87,8 +70,6 @@ struct HumidityWidget: View {
         .glassmorphic(cornerRadius: 22)
     }
 }
-
-// MARK: - Preview
 
 #Preview {
     ZStack {

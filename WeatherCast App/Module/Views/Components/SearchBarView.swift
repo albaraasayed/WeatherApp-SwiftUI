@@ -7,32 +7,20 @@
 
 import SwiftUI
 
-// MARK: - Search Bar View
-
-/// A glassmorphic search field with a magnifying glass icon.
-/// Triggers search when text changes (debounced via onChange).
 struct SearchBarView: View {
-
-    // MARK: - Properties
 
     @Binding var searchText: String
 
-    /// Called when the search text changes (after a brief delay)
     var onSearch: () -> Void
 
-    /// Called when the user taps the clear button
     var onClear: () -> Void
-
-    // MARK: - Body
 
     var body: some View {
         HStack(spacing: 10) {
-            // Magnifying glass icon
             Image(systemName: "magnifyingglass")
                 .font(.system(size: 16))
                 .foregroundStyle(Color.themeSecondary.opacity(0.5))
 
-            // Text field
             TextField("Search for a city...", text: $searchText)
                 .font(.system(size: 16))
                 .foregroundStyle(.white)
@@ -40,7 +28,6 @@ struct SearchBarView: View {
                 .autocorrectionDisabled()
                 .textInputAutocapitalization(.words)
 
-            // Clear button
             if !searchText.isEmpty {
                 Button {
                     searchText = ""
@@ -72,8 +59,6 @@ struct SearchBarView: View {
         }
     }
 }
-
-// MARK: - Preview
 
 #Preview {
     ZStack {

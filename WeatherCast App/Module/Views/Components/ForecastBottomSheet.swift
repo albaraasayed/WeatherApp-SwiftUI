@@ -7,25 +7,14 @@
 
 import SwiftUI
 
-// MARK: - Forecast Bottom Sheet
-
-/// A custom bottom sheet with a drag handle that contains the forecast
-/// tab toggler, hourly/weekly forecast views, and the weather details grid.
-/// Uses an ultra-thin material background with a purple tint.
 struct ForecastBottomSheet: View {
 
-    // MARK: - Properties
-
-    /// The currently selected forecast tab
     @State private var selectedTab: ForecastTab = .hourly
 
-    /// Hourly forecast data from the ViewModel
     let hourlyData: [(time: String, temp: Int, iconName: String, rainChance: String)]
 
-    /// Weekly forecast data from the ViewModel
     let weeklyData: [(day: String, temp: Int, iconName: String, rainChance: String, low: Int)]
 
-    /// Weather detail values for the grid
     let uvIndex: Double
     let uvDescription: String
     let sunrise: String
@@ -41,24 +30,19 @@ struct ForecastBottomSheet: View {
     let airQualityIndex: Int
     let airQualityDescription: String
 
-    // MARK: - Body
-
     var body: some View {
         VStack(spacing: 0) {
-            // Drag handle
             Capsule()
                 .fill(Color.white.opacity(0.3))
                 .frame(width: 48, height: 5)
                 .padding(.top, 10)
                 .padding(.bottom, 8)
 
-            // Scrollable content
             ScrollView(.vertical, showsIndicators: false) {
                 VStack(spacing: 16) {
                     ForecastTabToggler(selectedTab: $selectedTab)
                         .padding(.top, 12)
 
-                    // Forecast content based on selected tab
                     if selectedTab == .hourly {
                         HourlyForecastView(hourlyData: hourlyData)
                             .transition(.opacity)
@@ -67,14 +51,12 @@ struct ForecastBottomSheet: View {
                             .transition(.opacity)
                     }
 
-                    // Separator
                     Rectangle()
                         .fill(Color.white.opacity(0.1))
                         .frame(height: 1)
                         .padding(.horizontal, 16)
                         .padding(.vertical, 8)
 
-                    // Weather details grid
                     WeatherDetailsGrid(
                         uvIndex: uvIndex,
                         uvDescription: uvDescription,
@@ -92,7 +74,6 @@ struct ForecastBottomSheet: View {
                         airQualityDescription: airQualityDescription
                     )
 
-                    // Bottom spacing
                     Spacer()
                         .frame(height: 40)
                 }
@@ -125,8 +106,6 @@ struct ForecastBottomSheet: View {
         .ignoresSafeArea(.all, edges: .bottom)
     }
 }
-
-// MARK: - Preview
 
 #Preview {
     let mockHourly: [(time: String, temp: Int, iconName: String, rainChance: String)] = [

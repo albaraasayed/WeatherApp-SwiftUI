@@ -7,49 +7,30 @@
 
 import SwiftUI
 
-// MARK: - Home Weather Screen
-
-/// The main weather screen that composes the Header, central weather artwork,
-/// the house parallax layer, and the Forecast Bottom Sheet.
 struct HomeWeatherScreen: View {
 
-    // MARK: - Properties
-
-    /// The ViewModel that provides all weather data
     var viewModel: WeatherViewModel
 
-    /// Called when the user taps the location list button
     var onShowLocations: () -> Void
-
-    // MARK: - State
 
     @State private var sheetOffset: CGFloat = 500
     @State private var lastDragOffset: CGFloat = 500
     @State private var hasInitializedOffset = false
 
-    // MARK: - Body
-
     var body: some View {
         GeometryReader { proxy in
-            // Calculate dynamic bounds based on screen size.
-            // 180 pts roughly covers the top toolbar, city name, large temperature, condition, and H: L: texts.
-            // This snaps the slider exactly underneath the High/Low temperature text.
             let minOffset: CGFloat = proxy.safeAreaInsets.top + 180
             
-            // Leave a portion of the slider visible at the bottom of the screen.
             let maxOffset: CGFloat = proxy.size.height - 180
 
             ZStack(alignment: .top) {
                 
-                // 1. Background Layer (Bottom-most Z-Index)
                 Image(viewModel.isDay ? "light-background" : "night-background")
                     .resizable()
                     .scaledToFill()
                     .ignoresSafeArea()
 
-                // Static Content Layer (Toolbar, Header, Artwork)
                 VStack(spacing: 0) {
-                    // Top toolbar
                     HStack {
                         Button {
                             onShowLocations()
@@ -76,7 +57,6 @@ struct HomeWeatherScreen: View {
                     .padding(.horizontal, 20)
                     .padding(.top, proxy.safeAreaInsets.top + 8)
 
-                    // Header: City name, temperature, condition, H/L
                     HeaderView(
                         cityName: viewModel.currentCity,
                         temperature: viewModel.currentTemperature,
@@ -87,7 +67,6 @@ struct HomeWeatherScreen: View {
                     )
                     .padding(.top, 8)
 
-                    // Central weather artwork
                     ZStack {
                         Circle()
                             .fill(
@@ -114,7 +93,6 @@ struct HomeWeatherScreen: View {
                     Spacer()
                 }
 
-                // 2. Top Layer: Forecast Bottom Sheet (Slider)
                 ForecastBottomSheet(
                     hourlyData: viewModel.hourlyForecast,
                     weeklyData: viewModel.weeklyForecast,
@@ -133,8 +111,6 @@ struct HomeWeatherScreen: View {
                     airQualityIndex: viewModel.airQualityIndex,
                     airQualityDescription: viewModel.airQualityDescription
                 )
-                // Height covers the remaining screen down to the bottom when fully expanded.
-                // Added extra padding to ensure the bottom rounded corners are hidden off-screen.
                 .frame(height: proxy.size.height - minOffset + proxy.safeAreaInsets.bottom + 100)
                 .ignoresSafeArea(.all, edges: .bottom)
                 .offset(y: sheetOffset)
@@ -142,19 +118,15 @@ struct HomeWeatherScreen: View {
                     DragGesture()
                         .onChanged { gesture in
                             let newOffset = lastDragOffset + gesture.translation.height
-                            // Clamp the offset within min and max bounds
                             sheetOffset = min(max(newOffset, minOffset), maxOffset)
                         }
                         .onEnded { gesture in
                             withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
                                 if gesture.translation.height < -50 {
-                                    // Snapped to Top (minOffset)
                                     sheetOffset = minOffset
                                 } else if gesture.translation.height > 50 {
-                                    // Snapped to Bottom (maxOffset)
                                     sheetOffset = maxOffset
                                 } else {
-                                    // Snap to nearest
                                     let distanceToMin = abs(sheetOffset - minOffset)
                                     let distanceToMax = abs(sheetOffset - maxOffset)
                                     sheetOffset = distanceToMin < distanceToMax ? minOffset : maxOffset
@@ -164,7 +136,6 @@ struct HomeWeatherScreen: View {
                         }
                 )
 
-                // Loading overlay
                 if viewModel.isLoading {
                     ZStack {
                         Color.black.opacity(0.3)
@@ -202,8 +173,6 @@ struct HomeWeatherScreen: View {
         }
     }
 }
-
-// MARK: - Preview
 
 #Preview {
     HomeWeatherScreen(

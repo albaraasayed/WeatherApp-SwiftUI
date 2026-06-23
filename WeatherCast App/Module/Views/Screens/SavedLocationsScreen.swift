@@ -8,36 +8,22 @@
 import SwiftUI
 import SwiftData
 
-// MARK: - Saved Locations Screen
-
-/// The screen where users can search for cities, save them, view saved locations,
-/// and tap a location to navigate to its weather.
 struct SavedLocationsScreen: View {
 
-    // MARK: - Properties
-
-    /// The ViewModel for search and saved locations management
     @Bindable var viewModel: SavedLocationsViewModel
 
-    /// SwiftData model context for persistence
     @Environment(\.modelContext) private var modelContext
 
-    /// Called when a location is tapped (to navigate to its weather)
     var onLocationSelected: (String) -> Void
 
-    /// Called when the back button is tapped
     var onDismiss: () -> Void
-
-    // MARK: - Body
 
     var body: some View {
         ZStack {
-            // Background
             WeatherGradients.darkBackground
                 .ignoresSafeArea()
 
             VStack(spacing: 16) {
-                // Top toolbar
                 HStack {
                     Button {
                         onDismiss()
@@ -59,14 +45,12 @@ struct SavedLocationsScreen: View {
 
                     Spacer()
 
-                    // Invisible spacer to center title
                     Color.clear
                         .frame(width: 80, height: 1)
                 }
                 .padding(.horizontal, 20)
                 .padding(.top, 12)
 
-                // Search bar
                 SearchBarView(
                     searchText: $viewModel.searchText,
                     onSearch: {
@@ -78,7 +62,6 @@ struct SavedLocationsScreen: View {
                 )
                 .padding(.horizontal, 16)
 
-                // Search results dropdown (shown when searching)
                 if !viewModel.searchResults.isEmpty {
                     VStack(spacing: 0) {
                         ForEach(viewModel.searchResults) { result in
@@ -111,7 +94,6 @@ struct SavedLocationsScreen: View {
                     .padding(.horizontal, 16)
                 }
 
-                // Searching indicator
                 if viewModel.isSearching {
                     VStack {
                         Spacer()
@@ -128,7 +110,6 @@ struct SavedLocationsScreen: View {
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
 
-                // Saved locations list
                 ScrollView {
                     LocationsListView(
                         locations: viewModel.locationWeatherData,
@@ -149,8 +130,6 @@ struct SavedLocationsScreen: View {
         }
     }
 }
-
-// MARK: - Preview
 
 #Preview {
     SavedLocationsScreen(

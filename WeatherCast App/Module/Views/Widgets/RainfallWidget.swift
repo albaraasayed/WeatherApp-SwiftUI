@@ -7,20 +7,10 @@
 
 import SwiftUI
 
-// MARK: - Rainfall Widget
-
-/// A weather detail widget showing the current rainfall amount
-/// with a contextual description.
 struct RainfallWidget: View {
 
-    // MARK: - Properties
-
-    /// Rainfall amount in millimeters
     let rainfallMm: Double
 
-    // MARK: - Private Computed
-
-    /// Context description based on rainfall amount
     private var contextText: String {
         if rainfallMm == 0 {
             return "No rainfall in the last 24 hours."
@@ -33,11 +23,8 @@ struct RainfallWidget: View {
         }
     }
 
-    // MARK: - Body
-
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            // Header
             HStack(spacing: 4) {
                 Image(systemName: "drop.fill")
                     .font(.system(size: 12))
@@ -49,12 +36,10 @@ struct RainfallWidget: View {
                     .tracking(0.5)
             }
 
-            // Rainfall value
             Text(String(format: "%.1f mm", rainfallMm))
                 .font(.system(size: 28, weight: .bold))
                 .foregroundStyle(.white)
 
-            // Context
             Text(contextText)
                 .font(.system(size: 14))
                 .foregroundStyle(Color.themeSecondary.opacity(0.6))
@@ -62,7 +47,6 @@ struct RainfallWidget: View {
 
             Spacer()
 
-            // Rain drops visual
             HStack(spacing: 6) {
                 ForEach(0..<5, id: \.self) { i in
                     Image(systemName: "drop.fill")
@@ -83,8 +67,6 @@ struct RainfallWidget: View {
         .glassmorphic(cornerRadius: 22)
     }
 }
-
-// MARK: - Preview
 
 #Preview {
     ZStack {

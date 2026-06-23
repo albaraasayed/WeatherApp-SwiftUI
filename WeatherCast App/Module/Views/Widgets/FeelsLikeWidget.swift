@@ -7,23 +7,12 @@
 
 import SwiftUI
 
-// MARK: - Feels Like Widget
-
-/// A weather detail widget showing the "Feels Like" temperature
-/// with a comparison to the actual temperature.
 struct FeelsLikeWidget: View {
 
-    // MARK: - Properties
-
-    /// Feels like temperature string (e.g., "22°")
     let feelsLike: String
 
-    /// Actual current temperature for comparison
     let actualTemp: String
 
-    // MARK: - Private Computed
-
-    /// Comparison text
     private var comparisonText: String {
         let feelsValue = Int(feelsLike.replacingOccurrences(of: "°", with: "")) ?? 0
         let actualValue = Int(actualTemp.replacingOccurrences(of: "°", with: "")) ?? 0
@@ -37,11 +26,8 @@ struct FeelsLikeWidget: View {
         }
     }
 
-    // MARK: - Body
-
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            // Header
             HStack(spacing: 4) {
                 Image(systemName: "thermometer.medium")
                     .font(.system(size: 12))
@@ -53,14 +39,12 @@ struct FeelsLikeWidget: View {
                     .tracking(0.5)
             }
 
-            // Temperature value
             Text(feelsLike)
                 .font(.system(size: 28, weight: .bold))
                 .foregroundStyle(.white)
 
             Spacer()
 
-            // Comparison description
             Text(comparisonText)
                 .font(.system(size: 14))
                 .foregroundStyle(Color.themeSecondary.opacity(0.6))
@@ -72,8 +56,6 @@ struct FeelsLikeWidget: View {
         .glassmorphic(cornerRadius: 22)
     }
 }
-
-// MARK: - Preview
 
 #Preview {
     ZStack {

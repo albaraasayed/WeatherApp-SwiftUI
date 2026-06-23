@@ -7,24 +7,12 @@
 
 import SwiftUI
 
-// MARK: - Sunrise/Sunset Widget
-
-/// A weather detail widget showing sunrise and sunset times
-/// with a sine wave arc graphic representing the sun's path.
 struct SunriseSunsetWidget: View {
 
-    // MARK: - Properties
-
-    /// Sunrise time string (e.g., "5:28 AM")
     let sunrise: String
 
-    /// Sunset time string (e.g., "7:25 PM")
     let sunset: String
 
-    // MARK: - Private Computed
-
-    /// Approximate sun position progress (0.0 = sunrise, 1.0 = sunset)
-    /// Uses current time to estimate position along the arc.
     private var sunProgress: Double {
         let formatter = DateFormatter()
         formatter.dateFormat = "hh:mm a"
@@ -37,7 +25,6 @@ struct SunriseSunsetWidget: View {
         let calendar = Calendar.current
         let now = Date()
 
-        // Get just the time components for comparison
         let sunriseMinutes = calendar.component(.hour, from: sunriseDate) * 60
             + calendar.component(.minute, from: sunriseDate)
         let sunsetMinutes = calendar.component(.hour, from: sunsetDate) * 60
@@ -52,11 +39,8 @@ struct SunriseSunsetWidget: View {
         return min(max(Double(elapsed) / Double(totalDaylight), 0), 1.0)
     }
 
-    // MARK: - Body
-
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            // Header
             HStack(spacing: 4) {
                 Image(systemName: "sunrise.fill")
                     .font(.system(size: 12))
@@ -68,20 +52,17 @@ struct SunriseSunsetWidget: View {
                     .tracking(0.5)
             }
 
-            // Sunrise time
             Text(sunrise)
                 .font(.system(size: 22, weight: .bold))
                 .foregroundStyle(.white)
 
             Spacer()
 
-            // Sun arc path
             SunArcView(progress: sunProgress)
                 .frame(height: 50)
 
             Spacer()
 
-            // Sunset label
             HStack {
                 Text("Sunset: \(sunset)")
                     .font(.system(size: 14))
@@ -95,12 +76,8 @@ struct SunriseSunsetWidget: View {
     }
 }
 
-// MARK: - Sun Arc Shape
-
-/// A sine-wave shaped arc showing the sun's path across the sky.
 struct SunArcView: View {
 
-    /// Sun position along the arc (0.0 to 1.0)
     let progress: Double
 
     var body: some View {
@@ -109,7 +86,6 @@ struct SunArcView: View {
             let height = geometry.size.height
 
             ZStack {
-                // The arc path
                 Path { path in
                     let steps = 100
                     for i in 0...steps {
@@ -126,14 +102,12 @@ struct SunArcView: View {
                 }
                 .stroke(Color.white.opacity(0.3), lineWidth: 2)
 
-                // Horizon dashed line
                 Path { path in
                     path.move(to: CGPoint(x: 0, y: height * 0.9))
                     path.addLine(to: CGPoint(x: width, y: height * 0.9))
                 }
                 .stroke(Color.white.opacity(0.15), style: StrokeStyle(lineWidth: 1, dash: [4, 4]))
 
-                // Sun indicator dot
                 let sunX = width * progress
                 let sunY = height - (sin(progress * .pi) * height * 0.8) - height * 0.1
 
@@ -147,15 +121,13 @@ struct SunArcView: View {
     }
 }
 
-// MARK: - Preview
-
 #Preview {
     ZStack {
         WeatherGradients.darkBackground
             .ignoresSafeArea()
 
         HStack(spacing: 12) {
-            SunriseSunsetWidget(sunrise: "5:28 AM", sunset: "7:25 PM")
+            SunriseSunsetWidget(sunrise: "5:28 AM", sunset: "3:25 PM")
             SunriseSunsetWidget(sunrise: "6:00 AM", sunset: "8:15 PM")
         }
         .padding()

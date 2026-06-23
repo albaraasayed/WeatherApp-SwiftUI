@@ -7,9 +7,6 @@
 
 import Foundation
 
-// MARK: - Search Result Model
-
-/// Represents a single city result from the WeatherAPI search endpoint.
 struct SearchResult: Codable, Identifiable {
     let id: Int
     let name: String
@@ -18,27 +15,18 @@ struct SearchResult: Codable, Identifiable {
     let lat: Double
     let lon: Double
 
-    /// A formatted display string: "City, Country"
     var displayName: String {
         return "\(name), \(country)"
     }
 }
 
-// MARK: - Search Service
-
-/// Handles location search requests using the WeatherAPI `search.json` endpoint.
 class SearchService {
 
-    /// Shared singleton instance
     static let shared = SearchService()
 
     private init() {}
 
-    /// Searches for locations matching the given query string.
-    /// - Parameter query: The search text (city name, postal code, etc.)
-    /// - Returns: An array of `SearchResult` matching the query.
     func searchLocations(query: String) async throws -> [SearchResult] {
-        // Don't search for very short queries
         guard query.count >= 2 else {
             return []
         }
@@ -50,7 +38,6 @@ class SearchService {
             throw WeatherError.invalidURL
         }
 
-        // Make the network request
         let data: Data
         let response: URLResponse
         do {
@@ -59,13 +46,11 @@ class SearchService {
             throw WeatherError.networkError(error)
         }
 
-        // Check for HTTP errors
         if let httpResponse = response as? HTTPURLResponse,
            httpResponse.statusCode != 200 {
             throw WeatherError.serverError(httpResponse.statusCode)
         }
 
-        // Decode the JSON array
         do {
             let decoder = JSONDecoder()
             let results = try decoder.decode([SearchResult].self, from: data)

@@ -7,14 +7,7 @@
 
 import SwiftUI
 
-// MARK: - Location Card
-
-/// A large, gradient-filled, rounded card displaying saved location weather info.
-/// Shows city, country, 3D weather icon, temperature, H/L, and condition text.
-/// The weather icon protrudes slightly from the top-right of the card.
 struct LocationCard: View {
-
-    // MARK: - Properties
 
     let cityName: String
     let country: String
@@ -24,27 +17,20 @@ struct LocationCard: View {
     let conditionText: String
     let iconName: String
 
-    /// Called when the user taps on this card
     var onTap: () -> Void
-
-    // MARK: - Body
 
     var body: some View {
         Button {
             onTap()
         } label: {
             ZStack(alignment: .topTrailing) {
-                // Card background
                 VStack(alignment: .leading, spacing: 8) {
-                    // Top section: City + Temperature
                     HStack(alignment: .top) {
                         VStack(alignment: .leading, spacing: 4) {
-                            // Temperature (large)
                             Text("\(temperature)°")
                                 .font(.system(size: 52, weight: .thin))
                                 .foregroundStyle(.white)
 
-                            // City and Country
                             Text(cityName)
                                 .font(.system(size: 20, weight: .semibold))
                                 .foregroundStyle(.white)
@@ -59,7 +45,6 @@ struct LocationCard: View {
 
                     Spacer()
 
-                    // Bottom section: Condition + H/L
                     HStack {
                         Text(conditionText)
                             .font(.system(size: 14, weight: .medium))
@@ -74,7 +59,6 @@ struct LocationCard: View {
                 }
                 .padding(20)
 
-                // Weather icon fully contained in the top-right
                 Image(iconName)
                     .resizable()
                     .scaledToFit()
@@ -111,8 +95,6 @@ struct LocationCard: View {
         .buttonStyle(.plain)
     }
 }
-
-// MARK: - Preview
 
 #Preview {
     ZStack {

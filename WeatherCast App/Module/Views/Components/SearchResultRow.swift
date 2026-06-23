@@ -7,28 +7,16 @@
 
 import SwiftUI
 
-// MARK: - Search Result Row
-
-/// A single row in the search results dropdown showing the city name,
-/// region/country, and an add button.
 struct SearchResultRow: View {
 
-    // MARK: - Properties
-
-    /// The city name (e.g., "Montreal")
     let cityName: String
 
-    /// The country name (e.g., "Canada")
     let country: String
 
-    /// Called when the user taps to add this location
     var onAdd: () -> Void
-
-    // MARK: - Body
 
     var body: some View {
         HStack {
-            // City and country info
             VStack(alignment: .leading, spacing: 2) {
                 Text(cityName)
                     .font(.system(size: 16, weight: .semibold))
@@ -41,7 +29,6 @@ struct SearchResultRow: View {
 
             Spacer()
 
-            // Add button
             Button {
                 onAdd()
             } label: {
@@ -60,8 +47,6 @@ struct SearchResultRow: View {
         .padding(.vertical, 10)
     }
 }
-
-// MARK: - Preview
 
 #Preview {
     ZStack {

@@ -7,15 +7,11 @@
 
 import Foundation
 
-// MARK: - Top-Level Response
-
 struct WeatherResponse: Codable {
     let location: Location
     let current: Current
     let forecast: Forecast
 }
-
-// MARK: - Location
 
 struct Location: Codable {
     let name: String
@@ -25,8 +21,6 @@ struct Location: Codable {
     let lon: Double?
     let localtime: String?
 }
-
-// MARK: - Current Weather
 
 struct Current: Codable {
     let tempC: Double
@@ -60,15 +54,11 @@ struct Current: Codable {
     }
 }
 
-// MARK: - Condition
-
 struct Condition: Codable {
     let text: String
     let icon: String?
     let code: Int?
 }
-
-// MARK: - Air Quality
 
 struct AirQuality: Codable {
     let co: Double?
@@ -89,13 +79,9 @@ struct AirQuality: Codable {
     }
 }
 
-// MARK: - Forecast
-
 struct Forecast: Codable {
     let forecastday: [ForecastDay]
 }
-
-// MARK: - Forecast Day
 
 struct ForecastDay: Codable {
     let dateEpoch: Int?
@@ -112,8 +98,6 @@ struct ForecastDay: Codable {
         case hour
     }
 }
-
-// MARK: - Day Summary
 
 struct Day: Codable {
     let maxtempC: Double
@@ -139,8 +123,6 @@ struct Day: Codable {
     }
 }
 
-// MARK: - Astronomy Data
-
 struct Astro: Codable {
     let sunrise: String?
     let sunset: String?
@@ -156,8 +138,6 @@ struct Astro: Codable {
         case moonPhase = "moon_phase"
     }
 }
-
-// MARK: - Hourly Forecast
 
 struct Hour: Codable {
     let timeEpoch: Int?

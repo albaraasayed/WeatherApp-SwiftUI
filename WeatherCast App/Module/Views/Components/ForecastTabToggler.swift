@@ -7,25 +7,14 @@
 
 import SwiftUI
 
-// MARK: - Forecast Tab
-
-/// The two available forecast tabs.
 enum ForecastTab: String, CaseIterable {
     case hourly = "Hourly Forecast"
     case weekly = "Weekly Forecast"
 }
 
-// MARK: - Forecast Tab Toggler
-
-/// A segmented control with a glassmorphic background for switching
-/// between Hourly and Weekly forecast views.
 struct ForecastTabToggler: View {
 
-    // MARK: - Properties
-
     @Binding var selectedTab: ForecastTab
-
-    // MARK: - Body
 
     var body: some View {
         HStack(spacing: 0) {
@@ -68,8 +57,6 @@ struct ForecastTabToggler: View {
         .padding(.horizontal, 16)
     }
 }
-
-// MARK: - Preview
 
 #Preview {
     ZStack {

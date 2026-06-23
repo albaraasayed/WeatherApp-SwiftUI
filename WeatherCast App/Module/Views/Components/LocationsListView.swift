@@ -7,31 +7,18 @@
 
 import SwiftUI
 
-// MARK: - Locations List View
-
-/// A vertical scroll view of LocationCard items.
-/// Supports swipe-to-delete for removing saved locations.
 struct LocationsListView: View {
 
-    // MARK: - Properties
-
-    /// The array of location weather info to display
     let locations: [LocationWeatherInfo]
 
-    /// Whether data is currently loading
     let isLoading: Bool
 
-    /// Called when a location card is tapped
     var onLocationTap: (LocationWeatherInfo) -> Void
 
-    /// Called when a location is deleted (swipe-to-delete)
     var onDelete: (UUID) -> Void
-
-    // MARK: - Body
 
     var body: some View {
         if isLoading {
-            // Loading state
             ZStack {
                 VStack(spacing: 16) {
                     ProgressView()
@@ -45,7 +32,6 @@ struct LocationsListView: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
         } else if locations.isEmpty {
-            // Empty state
             VStack(spacing: 16) {
                 Image(systemName: "mappin.slash")
                     .font(.system(size: 40))
@@ -62,7 +48,6 @@ struct LocationsListView: View {
             .frame(maxWidth: .infinity)
             .padding(.top, 80)
         } else {
-            // Location cards list
             LazyVStack(spacing: 16) {
                 ForEach(locations) { location in
                     ZStack(alignment: .topLeading) {
@@ -79,7 +64,6 @@ struct LocationsListView: View {
                             }
                         )
                         
-                        // Clear Delete Button
                         Button {
                             onDelete(location.id)
                         } label: {
@@ -103,8 +87,6 @@ struct LocationsListView: View {
         }
     }
 }
-
-// MARK: - Preview
 
 #Preview {
     let mockLocations: [LocationWeatherInfo] = [

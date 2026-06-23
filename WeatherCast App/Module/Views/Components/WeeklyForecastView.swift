@@ -7,17 +7,9 @@
 
 import SwiftUI
 
-// MARK: - Weekly Forecast View
-
-/// A horizontal scroll view containing multiple WeeklyForecastCard items.
 struct WeeklyForecastView: View {
 
-    // MARK: - Properties
-
-    /// Array of weekly data tuples: (day, temp, iconName, rainChance, low)
     let weeklyData: [(day: String, temp: Int, iconName: String, rainChance: String, low: Int)]
-
-    // MARK: - Body
 
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
@@ -36,10 +28,7 @@ struct WeeklyForecastView: View {
     }
 }
 
-// MARK: - Preview
-
 #Preview {
-    // Preview using raw tuples — not the main WeatherModel
     let mockData: [(day: String, temp: Int, iconName: String, rainChance: String, low: Int)] = [
         ("Today", 24, "Sun", "10%", 18),
         ("TUE", 22, "Cloud", "30%", 16),

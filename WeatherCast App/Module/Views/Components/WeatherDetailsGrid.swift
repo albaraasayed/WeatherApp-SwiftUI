@@ -7,14 +7,7 @@
 
 import SwiftUI
 
-// MARK: - Weather Details Grid
-
-/// A vertical stack containing the Air Quality card (full-width)
-/// followed by a 2-column grid of all weather detail widgets.
-/// This is a pure composition container — it assembles widgets.
 struct WeatherDetailsGrid: View {
-
-    // MARK: - Properties
 
     let uvIndex: Double
     let uvDescription: String
@@ -31,24 +24,18 @@ struct WeatherDetailsGrid: View {
     let airQualityIndex: Int
     let airQualityDescription: String
 
-    // MARK: - Grid Layout
-
     private let columns = [
         GridItem(.flexible(), spacing: 12),
         GridItem(.flexible(), spacing: 12)
     ]
 
-    // MARK: - Body
-
     var body: some View {
         VStack(spacing: 12) {
-            // Air Quality — full width
             AirQualityCard(
                 aqiValue: airQualityIndex,
                 description: airQualityDescription
             )
 
-            // 2-Column grid of widgets
             LazyVGrid(columns: columns, spacing: 12) {
                 UVIndexWidget(
                     uvValue: uvIndex,
@@ -90,8 +77,6 @@ struct WeatherDetailsGrid: View {
         .padding(.horizontal, 16)
     }
 }
-
-// MARK: - Preview
 
 #Preview {
     ScrollView {

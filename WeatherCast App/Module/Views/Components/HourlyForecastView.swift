@@ -7,17 +7,9 @@
 
 import SwiftUI
 
-// MARK: - Hourly Forecast View
-
-/// A horizontal scroll view containing multiple HourlyForecastCard items.
 struct HourlyForecastView: View {
 
-    // MARK: - Properties
-
-    /// Array of hourly data tuples: (time, temp, iconName, rainChance)
     let hourlyData: [(time: String, temp: Int, iconName: String, rainChance: String)]
-
-    // MARK: - Body
 
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
@@ -36,10 +28,7 @@ struct HourlyForecastView: View {
     }
 }
 
-// MARK: - Preview
-
 #Preview {
-    // Preview using raw tuples — not the main WeatherModel
     let mockData: [(time: String, temp: Int, iconName: String, rainChance: String)] = [
         ("Now", 19, "Sun", "0%"),
         ("2 PM", 20, "Sun_cloud", "10%"),

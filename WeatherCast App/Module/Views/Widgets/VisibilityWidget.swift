@@ -7,20 +7,10 @@
 
 import SwiftUI
 
-// MARK: - Visibility Widget
-
-/// A weather detail widget showing the current visibility distance
-/// in kilometers with a contextual description.
 struct VisibilityWidget: View {
 
-    // MARK: - Properties
-
-    /// Visibility in kilometers
     let visibilityKm: Double
 
-    // MARK: - Private Computed
-
-    /// Description based on visibility level
     private var visibilityDescription: String {
         if visibilityKm >= 10 {
             return "It's perfectly clear right now."
@@ -35,11 +25,8 @@ struct VisibilityWidget: View {
         }
     }
 
-    // MARK: - Body
-
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            // Header
             HStack(spacing: 4) {
                 Image(systemName: "eye.fill")
                     .font(.system(size: 12))
@@ -51,14 +38,12 @@ struct VisibilityWidget: View {
                     .tracking(0.5)
             }
 
-            // Visibility value
             Text(String(format: "%.0f km", visibilityKm))
                 .font(.system(size: 28, weight: .bold))
                 .foregroundStyle(.white)
 
             Spacer()
 
-            // Description
             Text(visibilityDescription)
                 .font(.system(size: 14))
                 .foregroundStyle(Color.themeSecondary.opacity(0.6))
@@ -70,8 +55,6 @@ struct VisibilityWidget: View {
         .glassmorphic(cornerRadius: 22)
     }
 }
-
-// MARK: - Preview
 
 #Preview {
     ZStack {

@@ -7,13 +7,7 @@
 
 import SwiftUI
 
-// MARK: - Weekly Forecast Card
-
-/// A pill-shaped card showing a single day's forecast:
-/// day name, custom weather icon, rain chance, and temperature.
 struct WeeklyForecastCard: View {
-
-    // MARK: - Properties
 
     let day: String
     let iconName: String
@@ -29,28 +23,22 @@ struct WeeklyForecastCard: View {
         self.isToday = (day == "Today")
     }
 
-    // MARK: - Body
-
     var body: some View {
         VStack(spacing: 12) {
-            // Day name
             Text(day)
                 .font(.system(size: 15, weight: .semibold))
                 .foregroundStyle(.white)
 
-            // Weather icon
             Image(iconName)
                 .resizable()
                 .scaledToFit()
                 .frame(width: 32, height: 32)
                 .frame(height: 36)
 
-            // Rain chance
             Text(rainChance)
                 .font(.system(size: 13, weight: .semibold))
                 .foregroundStyle(Color(hex: "40CBD8"))
 
-            // Temperature
             Text(temperature)
                 .font(.system(size: 20, weight: .regular))
                 .foregroundStyle(.white)
@@ -83,8 +71,6 @@ struct WeeklyForecastCard: View {
         .shadow(color: Color(hex: "48319D").opacity(isToday ? 0.5 : 0), radius: 10, y: 5)
     }
 }
-
-// MARK: - Preview
 
 #Preview {
     ZStack {
