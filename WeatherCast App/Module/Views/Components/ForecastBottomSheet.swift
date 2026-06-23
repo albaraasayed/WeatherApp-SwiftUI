@@ -52,16 +52,9 @@ struct ForecastBottomSheet: View {
                 .padding(.top, 10)
                 .padding(.bottom, 8)
 
-            // Divider line
-            Rectangle()
-                .fill(Color.white.opacity(0.15))
-                .frame(height: 1)
-                .padding(.horizontal, 16)
-
             // Scrollable content
             ScrollView(.vertical, showsIndicators: false) {
                 VStack(spacing: 16) {
-                    // Tab toggler
                     ForecastTabToggler(selectedTab: $selectedTab)
                         .padding(.top, 12)
 

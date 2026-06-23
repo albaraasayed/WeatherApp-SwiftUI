@@ -113,14 +113,19 @@ struct SavedLocationsScreen: View {
 
                 // Searching indicator
                 if viewModel.isSearching {
-                    HStack(spacing: 8) {
-                        ProgressView()
-                            .tint(.white)
-                            .scaleEffect(0.8)
-                        Text("Searching...")
-                            .font(.system(size: 14))
-                            .foregroundStyle(Color.themeSecondary.opacity(0.5))
+                    VStack {
+                        Spacer()
+                        HStack(spacing: 8) {
+                            ProgressView()
+                                .tint(.white)
+                                .scaleEffect(0.8)
+                            Text("Searching...")
+                                .font(.system(size: 14))
+                                .foregroundStyle(Color.themeSecondary.opacity(0.5))
+                        }
+                        Spacer()
                     }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
 
                 // Saved locations list

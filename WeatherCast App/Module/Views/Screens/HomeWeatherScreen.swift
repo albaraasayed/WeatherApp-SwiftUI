@@ -166,12 +166,15 @@ struct HomeWeatherScreen: View {
 
                 // Loading overlay
                 if viewModel.isLoading {
-                    Color.black.opacity(0.3)
-                        .ignoresSafeArea()
+                    ZStack {
+                        Color.black.opacity(0.3)
+                            .ignoresSafeArea()
 
-                    ProgressView()
-                        .tint(.white)
-                        .scaleEffect(1.5)
+                        ProgressView()
+                            .tint(.white)
+                            .scaleEffect(1.5)
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    }
                 }
             }
             .ignoresSafeArea()

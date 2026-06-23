@@ -32,16 +32,18 @@ struct LocationsListView: View {
     var body: some View {
         if isLoading {
             // Loading state
-            VStack(spacing: 16) {
-                ProgressView()
-                    .tint(.white)
-                    .scaleEffect(1.2)
+            ZStack {
+                VStack(spacing: 16) {
+                    ProgressView()
+                        .tint(.white)
+                        .scaleEffect(1.2)
 
-                Text("Loading locations...")
-                    .font(.system(size: 14))
-                    .foregroundStyle(Color.themeSecondary.opacity(0.5))
+                    Text("Loading locations...")
+                        .font(.system(size: 14))
+                        .foregroundStyle(Color.themeSecondary.opacity(0.5))
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
         } else if locations.isEmpty {
             // Empty state
             VStack(spacing: 16) {
