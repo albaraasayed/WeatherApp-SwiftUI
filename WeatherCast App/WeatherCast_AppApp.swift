@@ -13,6 +13,7 @@ struct WeatherCast_AppApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .preferredColorScheme(.dark)
         }
         .modelContainer(for: SavedLocation.self)
     }
