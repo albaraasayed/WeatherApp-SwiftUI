@@ -63,18 +63,31 @@ struct LocationsListView: View {
             // Location cards list
             LazyVStack(spacing: 16) {
                 ForEach(locations) { location in
-                    LocationCard(
-                        cityName: location.cityName,
-                        country: location.country,
-                        temperature: location.temperature,
-                        high: location.high,
-                        low: location.low,
-                        conditionText: location.conditionText,
-                        iconName: location.iconName,
-                        onTap: {
-                            onLocationTap(location)
+                    ZStack(alignment: .topLeading) {
+                        LocationCard(
+                            cityName: location.cityName,
+                            country: location.country,
+                            temperature: location.temperature,
+                            high: location.high,
+                            low: location.low,
+                            conditionText: location.conditionText,
+                            iconName: location.iconName,
+                            onTap: {
+                                onLocationTap(location)
+                            }
+                        )
+                        
+                        // Clear Delete Button
+                        Button {
+                            onDelete(location.id)
+                        } label: {
+                            Image(systemName: "minus.circle.fill")
+                                .font(.system(size: 28))
+                                .foregroundStyle(.red, .white)
+                                .shadow(color: .black.opacity(0.3), radius: 3, x: 0, y: 2)
                         }
-                    )
+                        .offset(x: -8, y: -8)
+                    }
                     .contextMenu {
                         Button(role: .destructive) {
                             onDelete(location.id)
