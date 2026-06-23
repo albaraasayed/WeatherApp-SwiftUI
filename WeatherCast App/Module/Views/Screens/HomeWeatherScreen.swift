@@ -42,7 +42,7 @@ struct HomeWeatherScreen: View {
             ZStack(alignment: .top) {
                 
                 // 1. Background Layer (Bottom-most Z-Index)
-                Image("light-background")
+                Image(viewModel.isDay ? "light-background" : "night-background")
                     .resizable()
                     .scaledToFill()
                     .ignoresSafeArea()
@@ -82,7 +82,8 @@ struct HomeWeatherScreen: View {
                         temperature: viewModel.currentTemperature,
                         condition: viewModel.conditionText,
                         highTemp: viewModel.highTemperature,
-                        lowTemp: viewModel.lowTemperature
+                        lowTemp: viewModel.lowTemperature,
+                        isDay: viewModel.isDay
                     )
                     .padding(.top, 8)
 
