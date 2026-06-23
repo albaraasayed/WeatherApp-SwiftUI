@@ -74,12 +74,13 @@ struct LocationCard: View {
                 }
                 .padding(20)
 
-                // 3D Weather icon protruding from top-right
+                // Weather icon fully contained in the top-right
                 Image(iconName)
                     .resizable()
                     .scaledToFit()
                     .frame(width: 100, height: 100)
-                    .offset(x: -10, y: -15)
+                    .padding(.trailing, 16)
+                    .padding(.top, 16)
             }
             .frame(height: 170)
             .background(
