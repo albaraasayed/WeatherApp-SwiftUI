@@ -200,7 +200,7 @@ class WeatherViewModel: NSObject, CLLocationManagerDelegate {
 
                 let isDay = hour.isDay == 1
                 let iconName = WeatherIconMapper.iconName(for: hour.condition.text, isDay: isDay)
-                let rainChance = hour.chanceOfRain ?? "0"
+                let rainChance = hour.chanceOfRain ?? 0
 
                 items.append((
                     time: timeLabel,
@@ -237,7 +237,7 @@ class WeatherViewModel: NSObject, CLLocationManagerDelegate {
             }
 
             let iconName = WeatherIconMapper.iconName(for: forecastDay.day.condition.text, isDay: true)
-            let rainChance = forecastDay.day.dailyChanceOfRain ?? "0"
+            let rainChance = forecastDay.day.dailyChanceOfRain ?? 0
 
             items.append((
                 day: dayName,

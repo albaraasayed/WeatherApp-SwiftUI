@@ -10,7 +10,7 @@ import SwiftUI
 // MARK: - Home Weather Screen
 
 /// The main weather screen that composes the Header, central weather artwork,
-/// and the Forecast Bottom Sheet. Acts purely as a container for sub-components.
+/// the house parallax layer, and the Forecast Bottom Sheet.
 struct HomeWeatherScreen: View {
 
     // MARK: - Properties
@@ -23,111 +23,106 @@ struct HomeWeatherScreen: View {
 
     // MARK: - State
 
-    @State private var sheetOffset: CGFloat = 400
-    @State private var lastDragOffset: CGFloat = 400
-    private let sheetMinOffset: CGFloat = 250
-    private let sheetMaxOffset: CGFloat = 500
+    @State private var sheetOffset: CGFloat = 500
+    @State private var lastDragOffset: CGFloat = 500
+    @State private var hasInitializedOffset = false
 
     // MARK: - Body
 
     var body: some View {
-        ZStack {
-            // Full-screen gradient background
-            WeatherGradients.darkBackground
-                .ignoresSafeArea()
+        GeometryReader { proxy in
+            // Calculate dynamic bounds based on screen size.
+            // 180 pts roughly covers the top toolbar, city name, large temperature, condition, and H: L: texts.
+            // This snaps the slider exactly underneath the High/Low temperature text.
+            let minOffset: CGFloat = proxy.safeAreaInsets.top + 180
+            
+            // Leave a portion of the slider visible at the bottom of the screen.
+            let maxOffset: CGFloat = proxy.size.height - 180
 
-            // Background image
-            Image("light-background")
-                .resizable()
-                .scaledToFill()
-                .ignoresSafeArea()
+            ZStack(alignment: .top) {
+                
+                // 1. Background Layer (Bottom-most Z-Index)
+                Image("light-background")
+                    .resizable()
+                    .scaledToFill()
+                    .ignoresSafeArea()
 
-            // Main content
-            VStack(spacing: 0) {
-                // Top toolbar
-                HStack {
-                    // Location button
-                    Button {
-                        onShowLocations()
-                    } label: {
-                        Image(systemName: "list.bullet")
-                            .font(.system(size: 20))
-                            .foregroundStyle(.white)
-                            .padding(10)
-                            .background(
-                                Circle()
-                                    .fill(.ultraThinMaterial.opacity(0.5))
-                            )
+                // Static Content Layer (Toolbar, Header, Artwork)
+                VStack(spacing: 0) {
+                    // Top toolbar
+                    HStack {
+                        Button {
+                            onShowLocations()
+                        } label: {
+                            Image(systemName: "list.bullet")
+                                .font(.system(size: 20))
+                                .foregroundStyle(.white)
+                                .padding(10)
+                                .background(Circle().fill(.ultraThinMaterial.opacity(0.5)))
+                        }
+
+                        Spacer()
+
+                        Button {
+                            viewModel.loadWeatherForCurrentLocation()
+                        } label: {
+                            Image(systemName: "location.fill")
+                                .font(.system(size: 16))
+                                .foregroundStyle(.white)
+                                .padding(10)
+                                .background(Circle().fill(.ultraThinMaterial.opacity(0.5)))
+                        }
                     }
+                    .padding(.horizontal, 20)
+                    .padding(.top, proxy.safeAreaInsets.top + 8)
+
+                    // Header: City name, temperature, condition, H/L
+                    HeaderView(
+                        cityName: viewModel.currentCity,
+                        temperature: viewModel.currentTemperature,
+                        condition: viewModel.conditionText,
+                        highTemp: viewModel.highTemperature,
+                        lowTemp: viewModel.lowTemperature
+                    )
+                    .padding(.top, 8)
+
+                    // Central weather artwork
+                    ZStack {
+                        Circle()
+                            .fill(
+                                RadialGradient(
+                                    colors: [
+                                        Color(hex: "F7CBFD").opacity(0.15),
+                                        Color(hex: "7758D1").opacity(0.05),
+                                        Color.clear
+                                    ],
+                                    center: .center,
+                                    startRadius: 10,
+                                    endRadius: 140
+                                )
+                            )
+                            .frame(width: 280, height: 280)
+
+                        Image(viewModel.currentIconName)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 180, height: 180)
+                    }
+                    .frame(height: 200)
 
                     Spacer()
-
-                    // Current location button
-                    Button {
-                        viewModel.loadWeatherForCurrentLocation()
-                    } label: {
-                        Image(systemName: "location.fill")
-                            .font(.system(size: 16))
-                            .foregroundStyle(.white)
-                            .padding(10)
-                            .background(
-                                Circle()
-                                    .fill(.ultraThinMaterial.opacity(0.5))
-                            )
-                    }
                 }
-                .padding(.horizontal, 20)
-                .padding(.top, 8)
 
-                // Header: City name, temperature, condition, H/L
-                HeaderView(
-                    cityName: viewModel.currentCity,
-                    temperature: viewModel.currentTemperature,
-                    condition: viewModel.conditionText,
-                    highTemp: viewModel.highTemperature,
-                    lowTemp: viewModel.lowTemperature
-                )
-                .padding(.top, 8)
-
-                // Central weather artwork
-                ZStack {
-                    // Radial glow behind artwork
-                    Circle()
-                        .fill(
-                            RadialGradient(
-                                colors: [
-                                    Color(hex: "F7CBFD").opacity(0.15),
-                                    Color(hex: "7758D1").opacity(0.05),
-                                    Color.clear
-                                ],
-                                center: .center,
-                                startRadius: 10,
-                                endRadius: 140
-                            )
-                        )
-                        .frame(width: 280, height: 280)
-
-                    // Weather icon
-                    Image(viewModel.currentIconName)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 180, height: 180)
-                }
-                .frame(height: 200)
-
-                Spacer()
-            }
-
-            // Bottom sheet overlay
-            VStack(spacing: 0) {
-                Spacer()
-
+                // 2. Middle Layer: House Parallax Image
+                // Placed behind the slider, directly bound to the sheet's vertical offset.
+                // Subtract 180 to anchor its bottom edge beautifully just above the slider's top edge.
                 Image("House")
                     .resizable()
                     .scaledToFit()
-                    .frame(maxWidth: .infinity)
-                    .offset(y: sheetOffset)
+                    .frame(width: proxy.size.width)
+                    .offset(y: sheetOffset - 180)
 
+                // 3. Top Layer: Forecast Bottom Sheet (Slider)
                 ForecastBottomSheet(
                     hourlyData: viewModel.hourlyForecast,
                     weeklyData: viewModel.weeklyForecast,
@@ -146,43 +141,55 @@ struct HomeWeatherScreen: View {
                     airQualityIndex: viewModel.airQualityIndex,
                     airQualityDescription: viewModel.airQualityDescription
                 )
-                .frame(height: UIScreen.main.bounds.height * 0.55)
+                // Height covers the remaining screen down to the bottom when fully expanded
+                .frame(height: proxy.size.height - minOffset + proxy.safeAreaInsets.bottom)
                 .offset(y: sheetOffset)
                 .gesture(
                     DragGesture()
                         .onChanged { gesture in
                             let newOffset = lastDragOffset + gesture.translation.height
-                            sheetOffset = min(max(newOffset, sheetMinOffset), sheetMaxOffset)
+                            // Clamp the offset within min and max bounds
+                            sheetOffset = min(max(newOffset, minOffset), maxOffset)
                         }
                         .onEnded { gesture in
                             withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
                                 if gesture.translation.height < -50 {
-                                    // Swipe up — expand
-                                    sheetOffset = sheetMinOffset
+                                    // Snapped to Top (minOffset)
+                                    sheetOffset = minOffset
+                                } else if gesture.translation.height > 50 {
+                                    // Snapped to Bottom (maxOffset)
+                                    sheetOffset = maxOffset
                                 } else {
-                                    // Swipe down — collapse
-                                    sheetOffset = sheetMaxOffset
+                                    // Snap to nearest
+                                    let distanceToMin = abs(sheetOffset - minOffset)
+                                    let distanceToMax = abs(sheetOffset - maxOffset)
+                                    sheetOffset = distanceToMin < distanceToMax ? minOffset : maxOffset
                                 }
                             }
                             lastDragOffset = sheetOffset
                         }
                 )
-            }
-            .ignoresSafeArea(edges: .bottom)
 
-            // Loading overlay
-            if viewModel.isLoading {
-                Color.black.opacity(0.3)
-                    .ignoresSafeArea()
+                // Loading overlay
+                if viewModel.isLoading {
+                    Color.black.opacity(0.3)
+                        .ignoresSafeArea()
 
-                ProgressView()
-                    .tint(.white)
-                    .scaleEffect(1.5)
+                    ProgressView()
+                        .tint(.white)
+                        .scaleEffect(1.5)
+                }
             }
-        }
-        .onAppear {
-            if viewModel.weather == nil {
-                viewModel.loadWeather(for: viewModel.currentCity)
+            .ignoresSafeArea()
+            .onAppear {
+                if !hasInitializedOffset {
+                    sheetOffset = maxOffset
+                    lastDragOffset = maxOffset
+                    hasInitializedOffset = true
+                }
+                if viewModel.weather == nil {
+                    viewModel.loadWeather(for: viewModel.currentCity)
+                }
             }
         }
         .alert("Error", isPresented: .init(
