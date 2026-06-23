@@ -53,26 +53,46 @@ class SavedLocationsViewModel {
     /// Any error message
     var errorMessage: String?
 
+    /// The current active search task used for debouncing API calls
+    private var searchTask: Task<Void, Never>?
+
     // MARK: - Search
 
-    /// Searches for locations matching the current search text.
+    /// Searches for locations matching the current search text with debouncing.
     func searchLocations() {
         let query = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        // Cancel the previous search task
+        searchTask?.cancel()
+        
         guard query.count >= 2 else {
             searchResults = []
+            isSearching = false
             return
         }
 
         isSearching = true
 
-        Task {
+        // Start a new debounced task
+        searchTask = Task {
+            // Wait 0.5 seconds before making the API request
+            try? await Task.sleep(nanoseconds: 500_000_000)
+            
+            // Check if user continued typing (task cancelled)
+            if Task.isCancelled { return }
+            
             do {
                 let results = try await SearchService.shared.searchLocations(query: query)
+                
+                if Task.isCancelled { return }
+                
                 await MainActor.run {
                     self.searchResults = results
                     self.isSearching = false
                 }
             } catch {
+                if Task.isCancelled { return }
+                
                 await MainActor.run {
                     self.searchResults = []
                     self.isSearching = false
