@@ -7,6 +7,7 @@
 
 import Foundation
 import CoreLocation
+import Observation
 
 // MARK: - Weather ViewModel
 

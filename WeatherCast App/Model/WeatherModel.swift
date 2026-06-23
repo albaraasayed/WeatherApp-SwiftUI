@@ -2,7 +2,7 @@
 //  WeatherModel.swift
 //  WeatherCast App
 //
-//  Created by albaraa alsayed on 08/01/1448 AH.
+//  Created by albaraa alsayed.
 //
 
 import Foundation
@@ -31,16 +31,16 @@ struct Location: Codable {
 struct Current: Codable {
     let tempC: Double
     let condition: Condition
-    let pressureMb: Double
-    let humidity: Int
-    let feelslikeC: Double
-    let visKm: Double
-    let windKph: Double
-    let windDir: String
-    let uv: Double
-    let cloud: Int
-    let precipMm: Double
-    let isDay: Int
+    let pressureMb: Double?
+    let humidity: Int?
+    let feelslikeC: Double?
+    let visKm: Double?
+    let windKph: Double?
+    let windDir: String?
+    let uv: Double?
+    let cloud: Int?
+    let precipMm: Double?
+    let isDay: Int?
     let airQuality: AirQuality?
 
     enum CodingKeys: String, CodingKey {
@@ -64,7 +64,7 @@ struct Current: Codable {
 
 struct Condition: Codable {
     let text: String
-    let icon: String
+    let icon: String?
     let code: Int?
 }
 
@@ -98,7 +98,7 @@ struct Forecast: Codable {
 // MARK: - Forecast Day
 
 struct ForecastDay: Codable {
-    let dateEpoch: Int
+    let dateEpoch: Int?
     let date: String
     let day: Day
     let astro: Astro
@@ -120,8 +120,8 @@ struct Day: Codable {
     let mintempC: Double
     let avgtempC: Double?
     let avghumidity: Double?
-    let dailyChanceOfRain: String?
-    let dailyChanceOfSnow: String?
+    let dailyChanceOfRain: Int?
+    let dailyChanceOfSnow: Int?
     let uv: Double?
     let totalprecipMm: Double?
     let condition: Condition
@@ -142,8 +142,8 @@ struct Day: Codable {
 // MARK: - Astronomy Data
 
 struct Astro: Codable {
-    let sunrise: String
-    let sunset: String
+    let sunrise: String?
+    let sunset: String?
     let moonrise: String?
     let moonset: String?
     let moonPhase: String?
@@ -160,16 +160,18 @@ struct Astro: Codable {
 // MARK: - Hourly Forecast
 
 struct Hour: Codable {
-    let timeEpoch: Int
+    let timeEpoch: Int?
     let time: String
     let tempC: Double
     let condition: Condition
-    let chanceOfRain: String?
+    let chanceOfRain: Int?
+    let chanceOfSnow: Int?
     let humidity: Int?
     let feelslikeC: Double?
     let isDay: Int?
     let windKph: Double?
     let windDir: String?
+    let precipMm: Double?
 
     enum CodingKeys: String, CodingKey {
         case timeEpoch = "time_epoch"
@@ -177,10 +179,12 @@ struct Hour: Codable {
         case tempC = "temp_c"
         case condition
         case chanceOfRain = "chance_of_rain"
+        case chanceOfSnow = "chance_of_snow"
         case humidity
         case feelslikeC = "feelslike_c"
         case isDay = "is_day"
         case windKph = "wind_kph"
         case windDir = "wind_dir"
+        case precipMm = "precip_mm"
     }
 }

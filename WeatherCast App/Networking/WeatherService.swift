@@ -75,7 +75,25 @@ class WeatherService {
             let decoder = JSONDecoder()
             let weatherResponse = try decoder.decode(WeatherResponse.self, from: data)
             return weatherResponse
+        } catch let error as DecodingError {
+            switch error {
+            case .typeMismatch(let type, let context):
+                print("Type '\(type)' mismatch: \(context.debugDescription)")
+                print("codingPath: \(context.codingPath)")
+            case .valueNotFound(let value, let context):
+                print("Value '\(value)' not found: \(context.debugDescription)")
+                print("codingPath: \(context.codingPath)")
+            case .keyNotFound(let key, let context):
+                print("Key '\(key)' not found: \(context.debugDescription)")
+                print("codingPath: \(context.codingPath)")
+            case .dataCorrupted(let context):
+                print("Data corrupted: \(context)")
+            @unknown default:
+                print("Unknown decoding error: \(error)")
+            }
+            throw WeatherError.decodingError(error)
         } catch {
+            print("Generic decoding error: \(error)")
             throw WeatherError.decodingError(error)
         }
     }
