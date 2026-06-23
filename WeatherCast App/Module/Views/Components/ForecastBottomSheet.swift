@@ -126,8 +126,10 @@ struct ForecastBottomSheet: View {
                             lineWidth: 1
                         )
                 )
+                .ignoresSafeArea(.all, edges: .bottom)
         )
         .clipShape(RoundedRectangle(cornerRadius: 44))
+        .ignoresSafeArea(.all, edges: .bottom)
     }
 }
 

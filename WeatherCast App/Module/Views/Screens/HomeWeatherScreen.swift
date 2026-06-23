@@ -113,16 +113,7 @@ struct HomeWeatherScreen: View {
                     Spacer()
                 }
 
-                // 2. Middle Layer: House Parallax Image
-                // Placed behind the slider, directly bound to the sheet's vertical offset.
-                // Subtract 180 to anchor its bottom edge beautifully just above the slider's top edge.
-                Image("House")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: proxy.size.width)
-                    .offset(y: sheetOffset - 180)
-
-                // 3. Top Layer: Forecast Bottom Sheet (Slider)
+                // 2. Top Layer: Forecast Bottom Sheet (Slider)
                 ForecastBottomSheet(
                     hourlyData: viewModel.hourlyForecast,
                     weeklyData: viewModel.weeklyForecast,
@@ -141,8 +132,10 @@ struct HomeWeatherScreen: View {
                     airQualityIndex: viewModel.airQualityIndex,
                     airQualityDescription: viewModel.airQualityDescription
                 )
-                // Height covers the remaining screen down to the bottom when fully expanded
-                .frame(height: proxy.size.height - minOffset + proxy.safeAreaInsets.bottom)
+                // Height covers the remaining screen down to the bottom when fully expanded.
+                // Added extra padding to ensure the bottom rounded corners are hidden off-screen.
+                .frame(height: proxy.size.height - minOffset + proxy.safeAreaInsets.bottom + 100)
+                .ignoresSafeArea(.all, edges: .bottom)
                 .offset(y: sheetOffset)
                 .gesture(
                     DragGesture()
