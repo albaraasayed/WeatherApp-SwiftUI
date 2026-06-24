@@ -5,7 +5,7 @@ WeatherCast is a beautifully designed, immersive weather app built completely in
 ## 🎨 UI/UX & Design Concept
 WeatherCast is crafted with a focus on premium visual excellence. The user experience is built around a modern glassmorphic design system, dynamic gradients, and gorgeous custom 3D weather icons that dynamically adapt based on the time of day and conditions.
 
-> **[Placeholder: Insert UI Mockups, Screenshots, or App Posters here]**
+> **[]**
 
 ## ✨ Key Features
 - **Real-time Weather:** Accurate current conditions, temperature, high/low, and feels-like data.
