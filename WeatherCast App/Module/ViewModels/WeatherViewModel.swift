@@ -20,6 +20,8 @@ class WeatherViewModel: NSObject, CLLocationManagerDelegate {
 
     var currentCity: String = "Montreal"
 
+    var showSettingsAlert: Bool = false
+
     private let locationManager = CLLocationManager()
     private var hasRequestedLocation = false
 
@@ -241,6 +243,20 @@ class WeatherViewModel: NSObject, CLLocationManagerDelegate {
             locationManager.requestLocation()
         } else {
             loadWeather(for: currentCity)
+        }
+    }
+
+    func requestLocationManually() {
+        hasRequestedLocation = true
+        let status = locationManager.authorizationStatus
+        if status == .notDetermined {
+            locationManager.requestWhenInUseAuthorization()
+        } else if status == .authorizedWhenInUse || status == .authorizedAlways {
+            isLoading = true
+            errorMessage = nil
+            locationManager.requestLocation()
+        } else if status == .denied || status == .restricted {
+            showSettingsAlert = true
         }
     }
 

@@ -45,7 +45,7 @@ struct HomeWeatherScreen: View {
                         Spacer()
 
                         Button {
-                            viewModel.loadWeatherForCurrentLocation()
+                            viewModel.requestLocationManually()
                         } label: {
                             Image(systemName: "location.fill")
                                 .font(.system(size: 16))
@@ -170,6 +170,19 @@ struct HomeWeatherScreen: View {
             Button("OK", role: .cancel) {}
         } message: {
             Text(viewModel.errorMessage ?? "An unknown error occurred.")
+        }
+        .alert("Location Access Denied", isPresented: .init(
+            get: { viewModel.showSettingsAlert },
+            set: { viewModel.showSettingsAlert = $0 }
+        )) {
+            Button("Cancel", role: .cancel) {}
+            Button("Open Settings") {
+                if let url = URL(string: UIApplication.openSettingsURLString) {
+                    UIApplication.shared.open(url)
+                }
+            }
+        } message: {
+            Text("Please enable location access in Settings to fetch local weather.")
         }
     }
 }
