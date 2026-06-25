@@ -14,6 +14,9 @@ struct SavedLocationsScreen: View {
 
     @Environment(\.modelContext) private var modelContext
 
+    @State private var showDeleteAlert = false
+    @State private var locationToDelete: UUID?
+
     var onLocationSelected: (String) -> Void
 
     var onDismiss: () -> Void
@@ -118,12 +121,24 @@ struct SavedLocationsScreen: View {
                             onLocationSelected(location.cityName)
                         },
                         onDelete: { id in
-                            viewModel.deleteLocationById(id, context: modelContext)
+                            locationToDelete = id
+                            showDeleteAlert = true
                         }
                     )
                     .padding(.top, 8)
                 }
             }
+        }
+        .alert("Delete Location", isPresented: $showDeleteAlert) {
+            Button("Cancel", role: .cancel) { }
+            Button("Delete", role: .destructive) {
+                if let id = locationToDelete {
+                    viewModel.deleteLocationById(id, context: modelContext)
+                    locationToDelete = nil
+                }
+            }
+        } message: {
+            Text("Are you sure you want to delete this location?")
         }
         .onAppear {
             viewModel.fetchWeatherForSavedLocations(context: modelContext)
